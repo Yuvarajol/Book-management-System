@@ -4,8 +4,8 @@ from tkinter import ttk
 
 def v():
     root = Tk()
-    root.title("BOOK Inventory")
-    root.geometry("500x250")
+    root.title("BOOK SALES")
+    root.geometry("600x250")
     root.configure(bg="#f5f5f5")
 
     style = ttk.Style()
@@ -15,12 +15,14 @@ def v():
     style.configure("TCombobox", font=("Arial", 10))
     
     input_frame = Frame(root, bg="#f5f5f5")
-    input_frame.pack(pady=20)
-
+    input_frame.grid(column=1,row=1,pady=20)
+    pr = ttk.Label(root,text="150")
+    pr.grid(row=0,column=2)
     l =  ttk.Label(input_frame,text="Select Item: ")
     l.grid(row=0,column=0 ,padx= 10, pady= 5,sticky=W)
     lq = ttk.Label(input_frame,text="Quantity:")
     lq.grid(row=0,column=1,padx=10,pady=5,sticky=W)
+    
     def view():
         fram = Toplevel(root)
         fram.title("Saved Qunatities")
@@ -60,8 +62,11 @@ def v():
                         file.write(i)
                     elif book == i.split(":")[0]:
                         p =  int(i.split(":")[1]) 
-                        p += quan
+                        p -= quan
+                        p1 += quan 
                         file.write(f"{book.split(":")[0]}:{p}\n")
+                        with open("data/sale.csv","a") as file1 :
+                            file1.writelines(f"{book.split(":")[0]},{quan}\n") 
                     f = True
             # with open("data/databook.csv","") as file:
             #     content = file.readlines()
@@ -74,8 +79,10 @@ def v():
                     file.write(i)
                 elif book == i.split(":")[0]:
                     p =  int(i.split(":")[1]) 
-                    p += quan
+                    p -= quan
                     file.write(f"{book.split(":")[0]}:{p}\n")
+                    with open("data/sale.csv","a") as file1 :
+                        file1.writelines(f"{book.split(":")[0]},{quan}\n") 
                     f = True
             if not f:
                 file.write(f"{book}:{quan}")
@@ -101,6 +108,5 @@ def v():
     busave.grid(row=2,column=1,pady=10)
     vbu =  ttk.Button(input_frame,text="View quantity",width=15,command=view)
     vbu.grid(row = 3, column=2 ,padx=10)
-
+    
     root.mainloop()
-
